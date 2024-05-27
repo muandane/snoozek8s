@@ -1,9 +1,11 @@
 <script>
-  import Icon from '@smui/textfield/icon';
-  import HelperText from '@smui/textfield/helper-text';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
   import { onMount } from 'svelte';
+  import { Button } from "$lib/components/ui/button/index.js";
+  import * as Card from "$lib/components/ui/card/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
+  import { Label } from "$lib/components/ui/label/index.js";
 
   // biome-ignore lint/style/useConst: <explanation>
   let resourceGroupName = import.meta.env.VITE_AZURE_RESOURCE_GROUP || '';
@@ -72,122 +74,52 @@
 
 <section>
 	<h1>Manage Node Pool</h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span> 
-  <div class="columns margins">
-    <div>
-      <Textfield
-        class="shaped-outlined"
-        variant="outlined"
-        bind:value={resourceGroupName}
-        label="Resource Group Name"
-      >
-      </Textfield>
-    </div>
-    <div>
-      <Textfield
-        class="shaped-outlined"
-        variant="outlined"
-        bind:value={clusterName}
-        label="Cluster Name"
-      >
-      </Textfield>
-    </div>
-    <div>
-      <Textfield
-        class="shaped-outlined"
-        variant="outlined"
-        bind:value={nodePoolName}
-        label="Node Pool Name"
-      >
-      </Textfield>
-    </div>
+  <div class="card-container">
+    <Card.Root class="w-[350px]">
+      <Card.Header>
+        <Card.Title>Manage Cluster</Card.Title>
+        <Card.Description>Manage your clusters nodepool in one-click.</Card.Description>
+      </Card.Header>
+      <Card.Content>
+        <form>
+          <div class="grid w-full items-center gap-4">
+            <div class="flex flex-col space-y-1.5">
+              <Label for="resourceGroupName">Resource Group Name</Label>
+              <Input id="resourceGroupName" bind:value={resourceGroupName} placeholder="Name of the AKS cluster resource group" />
+            </div>
+            <div class="flex flex-col space-y-1.5">
+              <Label for="clusterName">Cluster Name</Label>
+              <Input id="clusterName" bind:value={clusterName} placeholder="Name of the AKS cluster" />
+            </div>
+            <div class="flex flex-col space-y-1.5">
+              <Label for="nodePoolName">NodePool Name</Label>
+              <Input id="nodePoolName" bind:value={nodePoolName} placeholder="Name of the AKS cluster nodepool" />
+            </div>
+          </div>
+        </form>
+      </Card.Content>
+      <Card.Footer class="flex justify-between">
+        <Button variant="outline" on:click={startNodePool} disabled={startLoading || stopLoading}>
+          {startLoading ? 'Starting...' : 'Start Node Pool'}
+        </Button>
+
+        <Button variant="destructive" on:click={stopNodePool} disabled={startLoading || stopLoading}>
+          {stopLoading ? 'Stopping...' : 'Stop Node Pool'}
+        </Button>
+      </Card.Footer>
+    </Card.Root>
   </div>
-  <button on:click={startNodePool} disabled={startLoading || stopLoading}>
-    {startLoading ? 'Starting...' : 'Start Node Pool'}
-  </button>
-  <button on:click={stopNodePool} disabled={startLoading || stopLoading}>
-    {stopLoading ? 'Stopping...' : 'Stop Node Pool'}
-  </button>
   {#if message}
     <p>{message}</p>
   {/if}
-	<h1>
-
-	<!-- <h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2> -->
-
-	<!-- <Counter /> -->
 </section>
 
 <style>
-  *
-    :global(
-      .shaped-outlined .mdc-notched-outline .mdc-notched-outline__leading
-    ) {
-    border-radius: 28px 0 0 28px;
-    width: 28px;
-  }
-  *
-    :global(
-      .shaped-outlined .mdc-notched-outline .mdc-notched-outline__trailing
-    ) {
-    border-radius: 0 28px 28px 0;
-  }
-  * :global(.shaped-outlined .mdc-notched-outline .mdc-notched-outline__notch) {
-    max-width: calc(100% - 28px * 2);
-  }
-  *
-    :global(
-      .shaped-outlined.mdc-text-field--with-leading-icon:not(
-          .mdc-text-field--label-floating
-        )
-        .mdc-floating-label
-    ) {
-    left: 16px;
-  }
-  * :global(.shaped-outlined + .mdc-text-field-helper-line) {
-    padding-left: 32px;
-    padding-right: 28px;
-  }
-	section {
+  section {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		flex: 0.6;
-	}
-	/* main {
-    text-align: center;
-    padding: 2em;
-  } */
-  button {
-    margin: 1em;
-    padding: 1em;
-    font-size: 1em;
-  }
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
 	}
 </style>
