@@ -30,5 +30,10 @@
     "vite": "^5.0.3",
     "wrangler": "^3.57.1"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@azure/arm-containerservice": "^20.0.0",
+    "@azure/identity": "^4.2.0",
+    "hono": "^4.4.0"
+  }
 }
