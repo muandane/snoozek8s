@@ -1,4 +1,4 @@
-import adapter from "@sveltejs/adapter-cloudflare";
+import adapter from '@sveltejs/adapter-cloudflare';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -8,8 +8,8 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-      "@/*": "./src/lib/*",
-    },
+			'@/*': './src/lib/*'
+		}
 	}
 };
 
