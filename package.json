@@ -38,9 +38,11 @@
 	"dependencies": {
 		"@azure/arm-containerservice": "^20.0.0",
 		"@azure/identity": "^4.2.0",
+		"axios": "^1.7.2",
 		"bits-ui": "^0.21.10",
 		"clsx": "^2.1.1",
 		"hono": "^4.4.0",
+		"node-cron": "^3.0.3",
 		"tailwind-merge": "^2.3.0",
 		"tailwind-variants": "^0.2.1"
 	}

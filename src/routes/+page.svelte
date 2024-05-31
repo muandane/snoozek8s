@@ -1,7 +1,7 @@
 <script>
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
 	import { onMount } from 'svelte';
+	import Clock from './Clock.svelte';
+	import TimezoneClock from './TimeZoneClock.svelte';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Popover from '$lib/components/ui/popover';
@@ -72,8 +72,33 @@
 		}
 	};
 	const createSchedule = async () => {
-		console.log('Creating schedule');
+    try {
+        const response = await fetch('/api/create-schedule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                resourceGroupName,
+                clusterName,
+                nodePoolName,
+                startSchedule,
+                stopSchedule
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            message = result.message;
+        } else {
+            console.error('Error creating schedule:', result);
+            message = `Error: ${result.message} (Code: ${result.code})`;
+        }
+    } catch (error) {
+        console.error('Unexpected error creating schedule:', error);
+        message = 'Unexpected error creating schedule';
+    }
 	};
+
 </script>
 
 <!-- <svelte:head>
@@ -83,6 +108,8 @@
 
 <section>
 	<h1>Manage Node Pool</h1>
+	<Clock />
+	<TimezoneClock timezone="Africa/Algiers" />
 	<div class="card-container">
 		<Tabs.Root value="manual" class="w-[400px]">
 			<Tabs.List class="grid w-full grid-cols-2">
